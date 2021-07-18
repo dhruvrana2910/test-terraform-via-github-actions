@@ -54,11 +54,11 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    #environment: production
-    env:
-    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID}}
-    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ID}}
-    AWS_REGION: 'us-east-2'
+    environment: production
+    #env:
+    #AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID}}
+    #AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ID}}
+    #AWS_REGION: 'us-east-2'
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -69,6 +69,15 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v2
+      
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ID }}
+        # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
+        aws-region: us-east-2
+
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
